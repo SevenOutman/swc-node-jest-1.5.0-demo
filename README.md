@@ -24,3 +24,35 @@ Run `npm test` to reproduce "cannot find module" error with `@swc-node/jest@1.5.
 
           at Resolver._throwModNotFoundError     (node_modules/jest-resolve/build/resolver.js:491:11)
           at Object.<anonymous> (src/index.ts:1:32)
+
+## Hint
+
+> Make sure to `jest --clearCache` before running Jest
+
+Change `paths` in `tsconfig.json` to
+
+```json
+{
+  "paths": {
+    "@/*": ["./src/*"]
+  }
+}
+```
+
+and the error becomes
+
+    Cannot find module './src/module' from 'src/index.ts'
+
+Then change `paths` in `tsconfig.json` to
+
+```json
+{
+  "paths": {
+    "@/*": ["../src/*"]
+  }
+}
+```
+
+and the error is gone.
+
+This may indicate that the error comes from an incorrect resolution of the `paths` option.
